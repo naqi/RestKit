@@ -92,7 +92,7 @@ static BOOL RKResponseRequiresContentTypeMatch(NSHTTPURLResponse *response, NSUR
             [userInfo setValue:[self.request URL] forKey:NSURLErrorFailingURLErrorKey];
             [userInfo setValue:self.request forKey:AFNetworkingOperationFailingURLRequestErrorKey];
             [userInfo setValue:self.response forKey:AFNetworkingOperationFailingURLResponseErrorKey];
-            
+
             if (![self hasAcceptableStatusCode]) {
                 NSUInteger statusCode = ([self.response isKindOfClass:[NSHTTPURLResponse class]]) ? (NSUInteger)[self.response statusCode] : 200;
                 [userInfo setValue:[NSString stringWithFormat:NSLocalizedString(@"Expected status code in (%@), got %d", nil), RKStringFromIndexSet(self.acceptableStatusCodes ?: [NSMutableIndexSet indexSet]), statusCode] forKey:NSLocalizedDescriptionKey];
@@ -104,20 +104,13 @@ static BOOL RKResponseRequiresContentTypeMatch(NSHTTPURLResponse *response, NSUR
             }
         }
     }
-    
+
     NSError *error = self.rkHTTPError ?: [super error];
     [self.lock unlock];
     return error;
 }
 
 #pragma mark - NSURLConnectionDelegate methods
-
-- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-{
-    [super connection:connection didReceiveAuthenticationChallenge:challenge];
-
-    RKLogDebug(@"Received authentication challenge");
-}
 
 - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse
 {
